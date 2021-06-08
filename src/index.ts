@@ -38,8 +38,8 @@ async function downloadImage(url: any, path: any) {
 }
 
 const init = async () => {
-    await exec(`find . -size 0 -delete`, { async: true });
-    await exec(`find . -type d -empty -delete`, { async: true });
+    await exec(`find ./backup -size 0 -delete`, { async: true });
+    await exec(`find ./backup -type d -empty -delete`, { async: true });
 
     const totalSupply = await contract.methods.totalSupply().call();
     console.log(`Total supply: ${totalSupply}`);
