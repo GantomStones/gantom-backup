@@ -2,6 +2,7 @@ import axios from "axios";
 import Web3 from "web3";
 import fs from "fs";
 import path from "path";
+import { exec } from "shelljs";
 // @ts-ignore
 import erc721 from "./erc721.json";
 
@@ -37,8 +38,17 @@ async function downloadImage(url: any, path: any) {
 }
 
 const init = async () => {
+    await exec(
+        `find /Users/alsinas/Projects/gantom-backup/backup -size 0 -delete`,
+        { async: true }
+    );
+    await exec(
+        `find /Users/alsinas/Projects/gantom-backup/backup -type d -empty -delete`,
+        { async: true }
+    );
+
     const totalSupply = await contract.methods.totalSupply().call();
-    console.log(totalSupply);
+    console.log(`Total supply: ${totalSupply}`);
 
     for (var i = 0; i < totalSupply; i++) {
         try {
@@ -61,7 +71,7 @@ const init = async () => {
             );
             await downloadImage(data.image, path);
         } catch (error) {
-            console.error(`An error occurred while backing up #${i}.`);
+            // console.error(`An error occurred while backing up #${i}.`);
         }
     }
 };
